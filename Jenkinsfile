@@ -23,7 +23,7 @@ pipeline {
         }
 	    
         // Déploiement des services via Docker Compose
-        stage('Déploiement docker-compose') {
+        stage('Déploiement des services via docker-compose') {
              steps {
                 sh 'docker-compose up -d'
              }
@@ -54,18 +54,22 @@ pipeline {
 
 			steps {
 				sh 'docker tag cd-pharma5_mysql:latest shadowteam123/test:latest'
-                		sh 'docker tag cd-pharma5_http:latest shadowteam123/test:latest'
+                sh 'docker tag cd-pharma5_http:latest shadowteam123/test:latest'
           
 			}
 		}
 
         // Push des images Docker sur Docker Hub
-		stage('Push vers le repo Docker Hub') {
+		stage('Push des images docker sur Docker Hub') {
 
 			steps {
 				sh 'docker push shadowteam123/test:latest'
           
 			}
+            post {
+                success {
+                    slackSend message:"A new version of pharmacie_app is succesful build - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+                }
 		}
         
     }
