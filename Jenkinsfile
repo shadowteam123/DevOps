@@ -36,6 +36,7 @@ pipeline {
                         sh 'docker rm database --force'
                         sh "echo 'Nettoyage environnement OK'"
                         sh 'docker rm phpmyadmin --force'
+                        sh 'docker rm php --force'
                         sh "echo 'Nettoyage environnement OK'"
                     }
                     else
