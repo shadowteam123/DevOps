@@ -29,7 +29,7 @@ pipeline {
                     containerName = sh(returnStdout: true, script: "docker ps  -f 'name=phpmyadmin' --format '{{.Names}}'").trim()
                     containerNames = sh(returnStdout: true, script: "docker ps  -f 'name=php_pharma' --format '{{.Names}}'").trim()
                     containerNamess = sh(returnStdout: true, script: "docker ps  -f 'name=database' --format '{{.Names}}'").trim()
-                    if(containerName == "phpmyadmin"  containerNames == "php"  containerNamess = "database")
+                    if(containerName == "phpmyadmin" || containerNames == "php" || containerNamess == "database")
                     {
                         sh 'docker rm php_pharma --force'
                         sh "echo 'Nettoyage environnement OK'"
