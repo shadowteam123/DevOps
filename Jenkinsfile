@@ -6,42 +6,55 @@ pipeline {
 		DOCKERHUB_CREDENTIALS=credentials('dockerhub-jenkins')
 	}
 
-    // Récupération du code sur la branche delivery
-
     stages {
+        stage("Build de l'image de l'application") {
+             steps {
+                //sh 'docker build -t php:8.0-apache .'
+                echo "Building application image"
+             }
+        }
+	    
+        // Build de l’image de la base de données
+        stage("Build de l'image de la base de données") {
+             steps {
+                //sh 'docker build -t mariadb .'
+                echo "Building database image"
+             }
+        }
+	    
         // Déploiement des services via Docker Compose
         stage('Déploiement docker-compose') {
              steps {
                 sh 'docker-compose up -d --build'
              }
-		post{
-		    success{
-			echo "Build image de l'application réussie."
-			echo "Build image de la base de données réussie."
-		    }
-        }	
+            post{
+                success{
+                    echo "Build image de l'application réussie."
+                    echo "Build image de la base de données réussie."
+                }
         }
-
+        }
+	    
         // Test de l’application avec curl et navigateur web
         stage('Test application') {
             steps {
                sh 'curl http://localhost:9000'
             }
         }
-
-        
-        stage('Login to Docker Hub') {
+	    
+        //Connexion à Github
+        stage('Connexion à Docker Hub') {
 
 			steps {
 				sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
 			}
 		}
-
+	//Tag des images
         stage('Tag des images') {
 
 			steps {
 				sh 'docker tag cd-pharma5_mysql:latest shadowteam123/test:latest'
-                		sh 'docker tag cd-pharma5_http:latest shadowteam123/test:latest'
+
           
 			}
 		}
