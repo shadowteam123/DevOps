@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage("Build de l'image de l'application") {
              steps {
-                //sh 'docker build -t php:8.0-apache .'
+                sh 'docker build -t app_pharmacie .'
                 echo "Building application image"
              }
         }
@@ -17,7 +17,7 @@ pipeline {
         // Build de l’image de la base de données
         stage("Build de l'image de la base de données") {
              steps {
-                //sh 'docker build -t mariadb .'
+                sh 'docker build -t db_pharmacie ./bdd/'
                 echo "Building database image"
              }
         }
@@ -25,7 +25,7 @@ pipeline {
         // Déploiement des services via Docker Compose
         stage('Déploiement docker-compose') {
              steps {
-                sh 'docker-compose up -d --build'
+                sh 'docker-compose up -d'
              }
             post{
                 success{
@@ -54,7 +54,7 @@ pipeline {
 
 			steps {
 				sh 'docker tag cd-pharma5_mysql:latest shadowteam123/test:latest'
-
+                		sh 'docker tag cd-pharma5_http:latest shadowteam123/test:latest'
           
 			}
 		}
