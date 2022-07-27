@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage("Build de l'image de l'application") {
              steps {
-                //sh 'docker build -t php:8.0-apache .'
+                sh 'docker build -t app_pharmacie .'
                 echo "Building application image"
              }
         }
@@ -17,15 +17,39 @@ pipeline {
         // Build de l’image de la base de données
         stage("Build de l'image de la base de données") {
              steps {
-                //sh 'docker build -t mariadb .'
+                sh 'docker build -t db_pharmacie ./bdd/'
                 echo "Building database image"
              }
         }
 	    
+        stage('Prepare Environement') {
+            steps
+            {
+                script {
+                    containerName = sh(returnStdout: true, script: "docker ps  -f 'name=phpmyadmin' --format '{{.Names}}'").trim()
+                    containerNames = sh(returnStdout: true, script: "docker ps  -f 'name=php_pharma' --format '{{.Names}}'").trim()
+                    containerNamess = sh(returnStdout: true, script: "docker ps  -f 'name=database' --format '{{.Names}}'").trim()
+                    if(containerName == "phpmyadmin" || containerNames == "php" || containerNamess == "database")
+                    {
+                        sh 'docker rm php_pharma --force'
+                        sh "echo 'Nettoyage environnement OK'"
+                        sh 'docker rm database --force'
+                        sh "echo 'Nettoyage environnement OK'"
+                        sh 'docker rm phpmyadmin --force'
+                        sh 'docker rm php --force'
+                        sh "echo 'Nettoyage environnement OK'"
+                    }
+                    else
+                    {
+                        sh "echo 'Ennvironnement OK'"
+                    }
+                }
+            }
+         }
         // Déploiement des services via Docker Compose
-        stage('Déploiement docker-compose') {
+        stage('Déploiement des services via docker-compose') {
              steps {
-                sh 'docker-compose up -d --build'
+                sh 'docker-compose up -d'
              }
             post{
                 success{
@@ -53,20 +77,26 @@ pipeline {
         stage('Tag des images') {
 
 			steps {
-				sh 'docker tag cd-pharma5_mysql:latest shadowteam123/test:latest'
-
+				sh 'docker tag continuous-delivery-pharmacie_mysql:latest shadowteam123/test:latest'
+                sh 'docker tag continuous-delivery-pharmacie_http:latest shadowteam123/test:latest'
           
 			}
 		}
 
         // Push des images Docker sur Docker Hub
-		stage('Push vers le repo Docker Hub') {
+		stage('Push des images docker sur Docker Hub') {
 
 			steps {
 				sh 'docker push shadowteam123/test:latest'
           
 			}
+            
 		}
         
     }
+    post {
+        success {
+            slackSend message:"A new version of pharmacie_app is succesful build - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+                }
+        }
 }
