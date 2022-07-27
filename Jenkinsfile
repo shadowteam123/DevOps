@@ -66,11 +66,13 @@ pipeline {
 				sh 'docker push shadowteam123/test:latest'
           
 			}
-            post {
-                success {
-                    slackSend message:"A new version of pharmacie_app is succesful build - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
-                }
+            
 		}
         
     }
+    post {
+        success {
+            slackSend message:"A new version of pharmacie_app is succesful build - ${env.JOB_NAME} ${env.BUILD_NUMBER} (<${env.BUILD_URL}|Open>)"
+                }
+        }
 }
