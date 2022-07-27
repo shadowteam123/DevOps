@@ -53,8 +53,8 @@ pipeline {
         stage('Tag des images') {
 
 			steps {
-				sh 'docker tag cd-pharma5_mysql:latest shadowteam123/test:latest'
-                sh 'docker tag cd-pharma5_http:latest shadowteam123/test:latest'
+				sh 'docker tag Continuous-Delivery-pharmacie_mysql:latest shadowteam123/test:latest'
+                		sh 'docker tag Continuous-Delivery-pharmacie_http:latest shadowteam123/test:latest'
           
 			}
 		}
