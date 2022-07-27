@@ -16,7 +16,7 @@ services:
   mysql:
     build:
       context: .
-      dockerfile : Dockerfile1 
+      dockerfile : bdd/Dockerfile 
     container_name: database
     command: --default-authentication-plugin=mysql_native_password
     restart: always
