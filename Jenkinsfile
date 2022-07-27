@@ -1,30 +1,39 @@
 pipeline {
     agent any
 
+    // Récupération du code sur la branche delivery
+
+    // Build de l'image de l'application
+
     stages {
-        stage("build") {
-            steps {
-                    echo "building"
-                }
-            }
+        stage('Build Docker Image application') {
+             steps {
+                sh 'docker build -t php:8.0-apache .'
+             }
+        }
 
-        stage("test") {
-            steps {
-                    echo "testing"
-                }
-            }
+        // Build de l’image de la base de données
+        stage('Build Docker Image BDD') {
+             steps {
+                sh 'docker build -t mariadb .'
+             }
+        }
 
-        stage("deploy") {
-            steps {
-                    echo "deploying"
-                }
-            }
+        // Déploiement des services via Docker Compose
+        stage('Déploiement docker-compose') {
+             steps {
+                sh 'docker-compose up'
+             }
+        }
 
-        stage("release") {
-           steps {
-                    echo "Releasing"
-                }
+        // Test de l’application avec curl et navigateur web
+        stage('Test application') {
+            steps {
+               sh 'curl http://localhost:9000'
             }
         }
 
+        // Push des images Docker sur Docker Hub
+        
+    }
 }
