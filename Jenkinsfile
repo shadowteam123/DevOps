@@ -14,12 +14,12 @@ pipeline {
              steps {
                 sh 'docker-compose up'
              }
-        }
-        post{
-            success{
-                echo "Build image de l'application réussie."
-                echo "Build image de la base de données réussie."
-            }
+		post{
+		    success{
+			echo "Build image de l'application réussie."
+			echo "Build image de la base de données réussie."
+		    }
+        }	
         }
 
         // Test de l’application avec curl et navigateur web
