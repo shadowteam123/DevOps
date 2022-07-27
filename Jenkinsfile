@@ -22,6 +22,29 @@ pipeline {
              }
         }
 	    
+        stage('Prepare Environement') {
+            steps
+            {
+                script {
+                    containerName = sh(returnStdout: true, script: "docker ps  -f 'name=phpmyadmin' --format '{{.Names}}'").trim()
+                    containerNames = sh(returnStdout: true, script: "docker ps  -f 'name=php_pharma' --format '{{.Names}}'").trim()
+                    containerNamess = sh(returnStdout: true, script: "docker ps  -f 'name=database' --format '{{.Names}}'").trim()
+                    if(containerName == "phpmyadmin"  containerNames == "php"  containerNamess = "database")
+                    {
+                        sh 'docker rm php_pharma --force'
+                        sh "echo 'Nettoyage environnement OK'"
+                        sh 'docker rm database --force'
+                        sh "echo 'Nettoyage environnement OK'"
+                        sh 'docker rm phpmyadmin --force'
+                        sh "echo 'Nettoyage environnement OK'"
+                    }
+                    else
+                    {
+                        sh "echo 'Ennvironnement OK'"
+                    }
+                }
+            }
+         }
         // Déploiement des services via Docker Compose
         stage('Déploiement des services via docker-compose') {
              steps {
@@ -54,7 +77,7 @@ pipeline {
 
 			steps {
 				sh 'docker tag continuous-delivery-pharmacie_mysql:latest shadowteam123/test:latest'
-                		sh 'docker tag continuous-delivery-pharmacie_http:latest shadowteam123/test:latest'
+                sh 'docker tag continuous-delivery-pharmacie_http:latest shadowteam123/test:latest'
           
 			}
 		}
