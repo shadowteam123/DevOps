@@ -40,7 +40,8 @@ pipeline {
         stage('Tag des images') {
 
 			steps {
-				sh 'docker tag -a shadowteam123/test:latest'
+				sh 'docker tag cd-pharma5_mysql:latest shadowteam123/test:latest'
+                		sh 'docker tag cd-pharma5_http:latest shadowteam123/test:latest'
           
 			}
 		}
