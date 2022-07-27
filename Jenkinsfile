@@ -54,7 +54,7 @@ pipeline {
 
 			steps {
 				sh 'docker tag cd-pharma5_mysql:latest shadowteam123/test:latest'
-                sh 'docker tag cd-pharma5_http:latest shadowteam123/test:latest'
+
           
 			}
 		}
