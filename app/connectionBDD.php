@@ -1,8 +1,9 @@
 <?php 
-$connect= new mysqli("project","project","project","project");
+//$connect= new mysqli_connect("localhost","project","project","project")
 
-if($connect->connect_error)
-{
-    echo "Connection failed". $con->connect_error;
+
+$connect = mysqli_connect("database","project","project","project");
+if (mysqli_connect_errno()) {
+    echo "Failed to connect to MySQL: " . mysqli_connect_error();
 }
 ?> 
