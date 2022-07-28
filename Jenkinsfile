@@ -3,7 +3,7 @@ pipeline {
 
     // Docker credentails
     environment {
-		DOCKERHUB_CREDENTIALS=credentials('dockerhub-jenkins')
+		DOCKERHUB_CREDENTIALS=credentials('Shadowteam-hubdocker')
 	}
 
     stages {
