@@ -9,7 +9,7 @@ pipeline {
     stages {
         stage("Build de l'image de l'application") {
              steps {
-                sh 'docker build -t app_pharmacie .'
+                sh 'docker build -t app_pharmacies .'
                 echo "Building application image"
              }
         }
@@ -17,7 +17,7 @@ pipeline {
         // Build de l’image de la base de données
         stage("Build de l'image de la base de données") {
              steps {
-                sh 'docker build -t db_pharmacie ./bdd/'
+                sh 'docker build -t db_pharmacies ./bdd/'
                 echo "Building database image"
              }
         }
