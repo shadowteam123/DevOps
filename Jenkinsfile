@@ -88,7 +88,7 @@ pipeline {
 
 			steps {
 				sh 'docker images -a'
-				sh 'docker push shadowteam123/test:latest'
+				sh 'docker push -a shadowteam123/test:latest'
           
 			}
             
