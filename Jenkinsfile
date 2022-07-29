@@ -15,6 +15,7 @@ pipeline {
         }
 	    
         // Build de l’image de la base de données
+	    // Test du push
         stage("Build de l'image de la base de données") {
              steps {
                 sh 'docker build -t db_pharmacie ./bdd/'
