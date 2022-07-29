@@ -87,6 +87,7 @@ pipeline {
 		stage('Push des images docker sur Docker Hub') {
 
 			steps {
+				sh 'docker images -a'
 				sh 'docker push shadowteam123/test:latest'
           
 			}
