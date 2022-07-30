@@ -78,7 +78,7 @@ pipeline {
 
 			steps {
 				sh 'docker tag continuous-delivery-pharmacie_mysql:latest shadowteam123/test:latest'
-                		sh 'docker tag continuous-delivery-pharmacie_http:latest shadowteam123/test:latest'
+                		sh 'docker tag continuous-delivery-pharmacie_http:latest shadowteam123/test1:latest'
           
 			}
 		}
@@ -89,6 +89,7 @@ pipeline {
 			steps {
 				sh 'docker images -a'
 				sh 'docker push shadowteam123/test:latest'
+				sh 'docker push shadowteam123/test1:latest'
           
 			}
             
