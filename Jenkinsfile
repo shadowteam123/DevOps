@@ -9,6 +9,8 @@ pipeline {
     stages {
         stage("Build de l'image de l'application") {
              steps {
+		//Nettoyage des images     
+		sh 'docker rmi --force $(docker images -a -q)
                 sh 'docker build -t app_pharmacies .'
                 echo "Building application image"
              }
@@ -80,6 +82,7 @@ pipeline {
 				sh 'docker ps'
 				sh 'docker tag continuous-delivery-pharmacie_mysql:latest shadowteam123/mysql_images:1.0'
                 		sh 'docker tag continuous-delivery-pharmacie_http:latest shadowteam123/http_images:1.0'
+				sh 'docker tag phpmyadmin shadowteam123/phpmyadmin_images:1.0'
           
 			}
 		}
@@ -91,6 +94,7 @@ pipeline {
 				sh 'docker images -a'
 				sh 'docker push shadowteam123/mysql_images:1.0'
 				sh 'docker push shadowteam123/http_images:1.0'
+				sh 'docker push shadowteam123/phpmyadmin_images:1.0'
 				echo "Push reussi."
           
 			}
