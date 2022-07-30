@@ -77,8 +77,9 @@ pipeline {
         stage('Tag des images') {
 
 			steps {
-				sh 'docker tag continuous-delivery-pharmacie_mysql:latest shadowteam123/test:latest'
-                		sh 'docker tag continuous-delivery-pharmacie_http:latest shadowteam123/test1:latest'
+				sh 'docker ps'
+				sh 'docker tag continuous-delivery-pharmacie_mysql:latest shadowteam123/mysql_images:1.0'
+                		sh 'docker tag continuous-delivery-pharmacie_http:latest shadowteam123/http_images:1.0'
           
 			}
 		}
@@ -88,8 +89,8 @@ pipeline {
 
 			steps {
 				sh 'docker images -a'
-				sh 'docker push shadowteam123/test:latest'
-				sh 'docker push shadowteam123/test1:latest'
+				sh 'docker push shadowteam123/mysql_images:1.0'
+				sh 'docker push shadowteam123/http_images:1.0'
           
 			}
             
