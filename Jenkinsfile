@@ -10,7 +10,7 @@ pipeline {
         stage("Build de l'image de l'application") {
              steps {
 		//Nettoyage des images     
-		sh 'docker rmi --force $(docker images -a -q)
+		sh 'docker rmi --force $(docker images -a -q)'
                 sh 'docker build -t app_pharmacies .'
                 echo "Building application image"
              }
