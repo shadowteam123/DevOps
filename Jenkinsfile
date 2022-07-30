@@ -29,14 +29,14 @@ pipeline {
                     containerName = sh(returnStdout: true, script: "docker ps  -f 'name=phpmyadmin' --format '{{.Names}}'").trim()
                     containerNames = sh(returnStdout: true, script: "docker ps  -f 'name=php_pharma' --format '{{.Names}}'").trim()
                     containerNamess = sh(returnStdout: true, script: "docker ps  -f 'name=database' --format '{{.Names}}'").trim()
-                    if(containerName == "phpmyadmin" || containerNames == "php" || containerNamess == "database")
+                    if(containerName == "phpmyadmin" || containerNames == "php_app" || containerNamess == "database")
                     {
                         sh 'docker rm php_pharma --force'
                         sh "echo 'Nettoyage environnement OK'"
                         sh 'docker rm database --force'
                         sh "echo 'Nettoyage environnement OK'"
                         sh 'docker rm phpmyadmin --force'
-                        sh 'docker rm php --force'
+                        sh 'docker rm php_app --force'
                         sh "echo 'Nettoyage environnement OK'"
                     }
                     else
@@ -78,7 +78,7 @@ pipeline {
 
 			steps {
 				sh 'docker tag continuous-delivery-pharmacie_mysql:latest shadowteam123/test:latest'
-                sh 'docker tag continuous-delivery-pharmacie_http:latest shadowteam123/test:latest'
+                		sh 'docker tag continuous-delivery-pharmacie_http:latest shadowteam123/test1:latest'
           
 			}
 		}
@@ -87,7 +87,9 @@ pipeline {
 		stage('Push des images docker sur Docker Hub') {
 
 			steps {
+				sh 'docker images -a'
 				sh 'docker push shadowteam123/test:latest'
+				sh 'docker push shadowteam123/test1:latest'
           
 			}
             
