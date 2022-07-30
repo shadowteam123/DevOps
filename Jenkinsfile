@@ -91,6 +91,7 @@ pipeline {
 				sh 'docker images -a'
 				sh 'docker push shadowteam123/mysql_images:1.0'
 				sh 'docker push shadowteam123/http_images:1.0'
+				echo "Push reussi."
           
 			}
             
